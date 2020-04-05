@@ -1,0 +1,17 @@
+Create project
+django-admin startproject backend
+
+Running development server
+python manage.py runserver
+
+Creating app
+python manage.py startapp voc_build
+
+Sync Database
+python manage.py migrate
+
+Create Super User
+python manage.py createsuperuser
+Username: admin
+email:admin@example.com
+Password:Abcde@123456
