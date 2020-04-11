@@ -162,9 +162,38 @@
             }    
         }
 
+        
+        self.ans=new Array(self.quizQuestions.length);
+        for( var i=0;i<self.quizQuestions.length;i++)
+        {
+            self.ans[i]=Math.floor(Math.random() * 4); 
+        }
+        self.correct=new Array(self.quizQuestions.length);
+        self.disflag=false;
+        
+
+        self.MarkQuiz=MarkQuiz;
+        function MarkQuiz(index){
+            var q=self.quizQuestions;
+            var a=self.ans;
+            var c=self.correct;
+            if(q[index]===a[index])
+                c[index]=true;
+            else
+                c[index]=false;
+            self.disflag=c[index];
+            console.log(self.disflag)
+        };
+
+
         self.selectAnswer=function(index){
             self.quizQuestions[self.activeq].selected=index;
+            MarkQuiz(index);
+
         }
+
+
+
 
     })
 })();
