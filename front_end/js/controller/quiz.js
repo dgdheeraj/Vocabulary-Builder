@@ -76,9 +76,9 @@
         self.error=false;
         self.finalise=false;
         function setActiveQuestion(index){
-            if(index==undefined)
+            /*if(index==undefined)
             {
-                // console.log(self.activeq);
+                console.log(self.activeq);
                 var breakout =false;
                 var a=self.activeq;
                 var b=false;
@@ -101,30 +101,41 @@
                 self.activeq=a;
                 self.error=b;
                 // console.log(self.activeq);
+            }*/
+            var a=self.activeq;
+            var b=false;
+            var quizLen=self.quizQuestions.length-1;
+            if(index==undefined)
+            {
+                a=a<quizLen?++a:0;
+                // self.activeq=a;
             }
             else
             {
                 self.activeq=index;
+                return;
             }
+            self.activeq=a;
         }
+
         var numQuesAnswered=0;
         self.questionAnswered=function(){
-            var e=false;
-            var f=false;
+            var e=self.error;
+            var f=self.finalise;
             var flag=0;
             var quizLen=self.quizQuestions.length;
             var a=self.quizQuestions
-            console.log("adh");
+            // console.log(self.quizQuestions[self.activeq].selected);
             if(self.quizQuestions[self.activeq].selected!==null){
                 numQuesAnswered++;
-                console.log("Passed1");
+                // console.log(numQuesAnswered,quizLen);
                 if(numQuesAnswered >= quizLen){
 
                     for( var i=0; i< quizLen;i++)
                     {
                         if(a[i].selected==null)
                         {
-                            console.log("callefef");
+                            // console.log("callefef");
                             setActiveQuestion(i);
                             this.flag=1;
                             return;
@@ -135,7 +146,7 @@
                     e=false;
                     f=true;
                     // return;
-                    console.log("here");
+                    // console.log("here");
                 }
 
             }
@@ -143,10 +154,10 @@
             self.finalise=f;
             if(e==false && f==true)
                 return;
-            console.log(flag);
+            // console.log(flag);
             if(flag==0)
             {
-                console.log("Wh");
+                // console.log("Wh");
                 self.setActiveQuestion();
             }    
         }
