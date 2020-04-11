@@ -1,0 +1,12 @@
+Download node.js
+
+After downloading,run
+npm install -g live-server
+
+This will install live-server
+
+After this go open the front_End folder in cmd and hit
+live-server
+
+Now localhost:8080 will open the quiz
+
