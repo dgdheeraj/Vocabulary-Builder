@@ -6,3 +6,8 @@
 .answer:hover{
     cursor:pointer;
 }
+
+.home{
+    margin: 100px 240px;
+    width: 1000px;
+}

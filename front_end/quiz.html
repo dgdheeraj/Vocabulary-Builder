@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lan="en" ng-app="VocBuild">
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script><script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
+        <link rel="stylesheet" href="css/style.css">
+        <script src="js/app.module.js"></script>
+        <script src="js/controller/quiz.js"></script>
+        <script src="js/controller/navbar.js"></script>
+        <style>
+          /* body {
+            background-image: url('scrabble.jpg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+          } */
+        </style>
+    </head>
+    <body>
+        
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid" ng-controller="navctrl as nav">
+              <div class="navbar-header">
+                <a class="navbar-brand" href="#">Vocabulary Builder</a>
+              </div>
+              <ul class="nav navbar-nav">
+                <li class="active"><a href="#" ng-click="nav.redirect('home')">Home</a></li>
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1
+                  <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">Page 1-1</a></li>
+                    <li><a href="#">Page 1-2</a></li>
+                    <li><a href="#">Page 1-3</a></li>
+                  </ul>
+                </li>
+                <li><a href="#" ng-click="nav.redirect('login')">Login</a></li>
+                <li><a href="#" ng-click="nav.redirect('register')">Register</a></li>
+              </ul>
+            </div>
+          </nav>
+
+          <div class="container">
+            <div class="page-header">
+                <h1>English Quiz</h1>
+                <h3>
+                    Quiz which will help you build your vocabulary 
+                </h3>
+            </div>
+
+        
+        <div ng-controller="quizCtrl as quiz">
+            <div class="row">
+                
+                <div class="col-xs-8">
+                    <h4>Progress:</h4>
+                    <div class="btn-toolbar">
+                        <button class="btn" 
+                        ng-repeat="q in quiz.quizQuestions" 
+                        ng-class="{'btn-info':q.selected!==null,'btn-danger':q.selected==null}"
+                        ng-click="quiz.setActiveQuestion($index)">
+                          <span class="glyphicon"
+                            ng-class="{'glyphicon-pencil':q.selected!==null,'glyphicon-question-sign':q.selected==null}"></span> </button>
+                    </div>
+                </div>
+                
+                <div class="col-xs-4">
+                  <div class="row">
+                    <h4>Legend:</h4>
+                    
+                    <div class="col-sm-4">
+                      <button class="btn btn-info">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                      </button>
+                      <p>Answered</p>
+                    </div>
+
+                    <div class="col-sm-4">
+                      <button class="btn btn-danger">
+                        <span class="glyphicon glyphicon-question-sign"></span>
+                      </button>
+                      <p>Unanswered</p>
+                    </div>
+                    
+
+                  </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+              <!-- <div class="alert alert-danger" ng-show="quiz.error"> -->
+                <!-- <button class="close" ng-click="quiz.error=false">Error. You have not answered questions</button> -->
+              <!-- </div> -->
+              <!-- <div> -->
+                <!-- <h3 align="center">{{quiz.counter}}</h3> -->
+              <!-- </div> -->
+              <h3>Question:</h3>
+              <div class="well well-sm">
+                <div class="row">
+                  <div class="col-xs-12">
+                    <h4>{{quiz.activeq+1+ ". "+ quiz.quizQuestions[quiz.activeq].text}}</h4>
+                    <!-- For The Options -->
+                    <div class="row">
+                      <div class="col-xs-6" ng-repeat="answer in quiz.quizQuestions[quiz.activeq].possibilities">
+                        <h4 class="answer" 
+                          ng-class="{'bg-info':$index===quiz.quizQuestions[quiz.activeq].selected}"
+                          ng-click="quiz.selectAnswer($index)">
+                          {{answer.answer}}
+                        </h4>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button class="btn btn-warning" ng-click="quiz.questionAnswered()">Continue</button>
+
+            </div>
+            
+            <div class="well well-sm" ng-show="quiz.finalise">
+              <div class="row">
+                <div class="col-xs-12">
+                  <h3>Are you sure?</h3>
+                  <button class="btn btn-success" ng-click="quiz.finaliseAnswers()">Yes</button> 
+                  <button class="btn btn-danger" ng-click="quiz.finalise=false">No</button>
+                </div>
+              </div>
+            </div>
+        </div>
+    </body>
+
+</html>

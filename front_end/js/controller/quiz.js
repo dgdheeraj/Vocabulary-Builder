@@ -64,13 +64,7 @@
             }
         ];
         
-        self.notes=[
-            {id:1,label:"First Note",done:false},
-            {id:2,label:"Second Note",done:true},
-            {id:3,label:"Third Note",done:true},
-            {id:3,label:"Fourth Note",done:false},
-        ];
-        
+        //Quiz Logic--------------------------------------------------------        
         self.activeq=0;
         self.setActiveQuestion=setActiveQuestion;
         self.error=false;
@@ -191,6 +185,8 @@
             MarkQuiz(index);
 
         }
+        //================================================================
+        // self.counter=100;
 
 
 

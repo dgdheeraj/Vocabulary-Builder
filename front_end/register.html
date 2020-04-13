@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lan="en" ng-app="VocBuild">
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script><script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+        <script src="js/app.module.js"></script>
+        <script src="js/controller/register.js"></script>
+        <script src="js/controller/navbar.js"></script>
+        <!--CSS for login-->
+        <style type="text/css">
+          .login-form {
+                width: 340px;
+                margin: 50px auto;
+                margin-bottom: 15px;
+                background: #f7f7f7;
+                box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+                padding: 30px;
+            }
+            .login-form h2 {
+                margin: 0 0 15px;
+            }
+            .form-control, .btn {
+                min-height: 38px;
+                border-radius: 2px;
+            }
+            .btn {        
+                font-size: 15px;
+                font-weight: bold;
+            }
+            body {
+                background-image: url('/images/scrabble.jpg');
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-size: cover;
+            }
+        </style>
+
+      </head>
+    <body>
+        <!--Navigation Bar on the top  -->
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid" ng-controller="navctrl as nav">
+              <div class="navbar-header">
+                <a class="navbar-brand" href="#">Vocabulary Builder</a>
+              </div>
+              <ul class="nav navbar-nav">
+                <li><a href="#" ng-click="nav.redirect('home')">Home</a></li>
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1
+                  <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">Page 1-1</a></li>
+                    <li><a href="#">Page 1-2</a></li>
+                    <li><a href="#">Page 1-3</a></li>
+                  </ul>
+                </li>
+                <li><a href="#" ng-click="nav.redirect('login')">Login</a></li>
+                <li class="active"><a href="#" ng-click="nav.redirect('register')">Register</a></li>
+              </ul>
+            </div>
+          </nav>
+        
+          <!--Login -->
+          <div class="login-form" ng-controller="registerctrl as register" >
+            <!-- <form action="/examples/actions/confirmation.php" method="post"> -->
+                <h2 class="text-center">Register</h2>       
+                
+                <div class="form-group has-feedback">
+                  <!-- <label class="control-label">Full Name:</label> -->
+                  <input type="text" class="form-control" ng-model="register.usr.name" placeholder="Name" />
+                  <i class="glyphicon glyphicon-user form-control-feedback"></i>
+                </div>
+
+                <div class="form-group has-feedback">
+                  <!-- <label class="control-label">Username:</label> -->
+                  <input type="text" class="form-control" ng-model="register.usr.uname" placeholder="Username" />
+                  <!-- <i class="glyphicon glyphicon-user form-control-feedback"></i> -->
+                </div>
+
+                <div class="form-group has-feedback">
+                  <!-- <label class="control-label">Email:</label> -->
+                  <input type="email" class="form-control" ng-model="register.usr.email" placeholder="Email" />
+                  <i class="glyphicon glyphicon-envelope form-control-feedback"></i>
+                </div>
+
+                <div class="form-group has-feedback">
+                  <!-- <label class="control-label">Password:</label> -->
+                  <input type="password" class="form-control" ng-model="register.usr.passwd" placeholder="Password" />
+                  <i class="glyphicon glyphicon-lock form-control-feedback"></i>
+                </div>
+
+                <div class="form-group has-feedback">
+                  <!-- <label class="control-label">Password:</label> -->
+                  <input type="password" class="form-control" ng-model="register.usr.rpasswd" placeholder="Repeat Password" />
+                  <i class="glyphicon glyphicon-lock form-control-feedback"></i>
+                </div>
+
+                <!-- <div class="form-group"> -->
+                    <!-- <input type="password" class="form-control" ng-model="register.usr.passwd" placeholder="Password" required="required"> -->
+                <!-- </div> -->
+                <div class="form-g/roup" >
+                    <button  class="btn btn-primary btn-block" ng-click="register.submit()">Register</button>
+                </div>
+                        
+            <!-- </form> -->
+            <br/><br/>
+            <p class="text-center"><a href="#" ng-controller="navctrl as nav" ng-click="nav.redirect('login')">Already Have Account? Login here</a></p>
+        </div>
+
+       
+
+</html>
