@@ -14,8 +14,8 @@
             if(a.username==vm.usr.username && a.passwd==vm.usr.passwd)
             {
               console.log("Success");
-              document.cookie="username="+a.username+";login=1";
-              console.log(document.cookie);
+              // document.cookie="username="+a.username+";login=1";
+              // console.log(document.cookie);
               $window.location.href="/index.html";
             }
           }

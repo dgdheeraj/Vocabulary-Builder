@@ -62,37 +62,37 @@
           </nav>
         
           <!--Login -->
-          <div class="login-form" ng-controller="registerctrl as register" >
+          <div class="login-form" ng-controller="registerctrl as $register" >
             <!-- <form action="/examples/actions/confirmation.php" method="post"> -->
                 <h2 class="text-center">Register</h2>       
                 
                 <div class="form-group has-feedback">
                   <!-- <label class="control-label">Full Name:</label> -->
-                  <input type="text" class="form-control" ng-model="register.usr.name" placeholder="Name" />
+                  <input type="text" class="form-control" ng-model="$register.usr.name" placeholder="Name" />
                   <i class="glyphicon glyphicon-user form-control-feedback"></i>
                 </div>
 
                 <div class="form-group has-feedback">
                   <!-- <label class="control-label">Username:</label> -->
-                  <input type="text" class="form-control" ng-model="register.usr.uname" placeholder="Username" />
+                  <input type="text" class="form-control" ng-model="$register.usr.uname" placeholder="Username" />
                   <!-- <i class="glyphicon glyphicon-user form-control-feedback"></i> -->
                 </div>
 
                 <div class="form-group has-feedback">
                   <!-- <label class="control-label">Email:</label> -->
-                  <input type="email" class="form-control" ng-model="register.usr.email" placeholder="Email" />
+                  <input type="email" class="form-control" ng-model="$register.usr.email" placeholder="Email" />
                   <i class="glyphicon glyphicon-envelope form-control-feedback"></i>
                 </div>
 
                 <div class="form-group has-feedback">
                   <!-- <label class="control-label">Password:</label> -->
-                  <input type="password" class="form-control" ng-model="register.usr.passwd" placeholder="Password" />
+                  <input type="password" class="form-control" ng-model="$register.usr.passwd" placeholder="Password" />
                   <i class="glyphicon glyphicon-lock form-control-feedback"></i>
                 </div>
 
                 <div class="form-group has-feedback">
                   <!-- <label class="control-label">Password:</label> -->
-                  <input type="password" class="form-control" ng-model="register.usr.rpasswd" placeholder="Repeat Password" />
+                  <input type="password" class="form-control" ng-model="$register.usr.rpasswd" placeholder="Repeat Password" />
                   <i class="glyphicon glyphicon-lock form-control-feedback"></i>
                 </div>
 
@@ -100,9 +100,11 @@
                     <!-- <input type="password" class="form-control" ng-model="register.usr.passwd" placeholder="Password" required="required"> -->
                 <!-- </div> -->
                 <div class="form-g/roup" >
-                    <button  class="btn btn-primary btn-block" ng-click="register.submit()">Register</button>
+                    <button  class="btn btn-primary btn-block" ng-click="$register.submit()">Register</button>
                 </div>
                         
+            <br>
+            <p class="text-center" ng-if="$register.register==false">Registration Failed. Please try Again</p>
             <!-- </form> -->
             <br/><br/>
             <p class="text-center"><a href="#" ng-controller="navctrl as nav" ng-click="nav.redirect('login')">Already Have Account? Login here</a></p>
