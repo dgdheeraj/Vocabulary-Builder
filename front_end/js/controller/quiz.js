@@ -1,7 +1,8 @@
 (function(){
-    angular.module("VocBuild").controller("quizCtrl",function(){
-        self=this;
-        self.quizQuestions  = [
+    angular.module("VocBuild").controller("quizCtrl",function($http){
+        // self=this;
+        var vm=this;
+        vm.quizQuestions  = [
             {
               type: "text",
               text: "How much can a loggerhead weigh?",
@@ -63,12 +64,22 @@
               correct: null
             }
         ];
-        
+        var a={
+            "ques":"4"
+        }
+        $http.post("http://localhost:5000/api/quiz",a).then(function(response)
+									{
+                    console.log(response.data);
+                    // vm.quizQuestions=response.data;
+                    console.log(response.data[0])
+        });
+        // console.log(vm.quizQuestions[0]["text"])
+        // console.log(vm.quizQuestions)
         //Quiz Logic--------------------------------------------------------        
-        self.activeq=0;
-        self.setActiveQuestion=setActiveQuestion;
-        self.error=false;
-        self.finalise=false;
+        vm.activeq=0;
+        vm.setActiveQuestion=setActiveQuestion;
+        vm.error=false;
+        vm.finalise=false;
         function setActiveQuestion(index){
             /*if(index==undefined)
             {
@@ -96,9 +107,9 @@
                 self.error=b;
                 // console.log(self.activeq);
             }*/
-            var a=self.activeq;
+            var a=vm.activeq;
             var b=false;
-            var quizLen=self.quizQuestions.length-1;
+            var quizLen=vm.quizQuestions.length-1;
             if(index==undefined)
             {
                 a=a<quizLen?++a:0;
@@ -106,21 +117,21 @@
             }
             else
             {
-                self.activeq=index;
+                vm.activeq=index;
                 return;
             }
-            self.activeq=a;
+            vm.activeq=a;
         }
 
         var numQuesAnswered=0;
-        self.questionAnswered=function(){
-            var e=self.error;
-            var f=self.finalise;
+        vm.questionAnswered=function(){
+            var e=vm.error;
+            var f=vm.finalise;
             var flag=0;
-            var quizLen=self.quizQuestions.length;
-            var a=self.quizQuestions
+            var quizLen=vm.quizQuestions.length;
+            var a=vm.quizQuestions
             // console.log(self.quizQuestions[self.activeq].selected);
-            if(self.quizQuestions[self.activeq].selected!==null){
+            if(vm.quizQuestions[vm.activeq].selected!==null){
                 numQuesAnswered++;
                 // console.log(numQuesAnswered,quizLen);
                 if(numQuesAnswered >= quizLen){
@@ -144,44 +155,44 @@
                 }
 
             }
-            self.error=e;
-            self.finalise=f;
+            vm.error=e;
+            vm.finalise=f;
             if(e==false && f==true)
                 return;
             // console.log(flag);
             if(flag==0)
             {
                 // console.log("Wh");
-                self.setActiveQuestion();
+                vm.setActiveQuestion();
             }    
         }
 
         
-        self.ans=new Array(self.quizQuestions.length);
-        for( var i=0;i<self.quizQuestions.length;i++)
+        vm.ans=new Array(vm.quizQuestions.length);
+        for( var i=0;i<vm.quizQuestions.length;i++)
         {
-            self.ans[i]=Math.floor(Math.random() * 4); 
+            vm.ans[i]=Math.floor(Math.random() * 4); 
         }
-        self.correct=new Array(self.quizQuestions.length);
-        self.disflag=false;
+        vm.correct=new Array(vm.quizQuestions.length);
+        vm.disflag=false;
         
 
-        self.MarkQuiz=MarkQuiz;
+        vm.MarkQuiz=MarkQuiz;
         function MarkQuiz(index){
-            var q=self.quizQuestions;
-            var a=self.ans;
-            var c=self.correct;
+            var q=vm.quizQuestions;
+            var a=vm.ans;
+            var c=vm.correct;
             if(q[index]===a[index])
                 c[index]=true;
             else
                 c[index]=false;
-            self.disflag=c[index];
-            console.log(self.disflag)
+            vm.disflag=c[index];
+            console.log(vm.disflag)
         };
 
 
-        self.selectAnswer=function(index){
-            self.quizQuestions[self.activeq].selected=index;
+        vm.selectAnswer=function(index){
+            vm.quizQuestions[vm.activeq].selected=index;
             MarkQuiz(index);
 
         }

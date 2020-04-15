@@ -55,14 +55,14 @@
                     <li><a href="#">Page 1-3</a></li>
                   </ul>
                 </li>
-                <li class="active"><a href="#" ng-click="nav.redirect('login')">Login</a></li>
+                <li class="active"><a href="#" ng-click="nav.redirect('login')">Login/Acc Info</a></li>
                 <li><a href="#" ng-click="nav.redirect('register')">Register</a></li>
               </ul>
             </div>
           </nav>
         
-          <!--Login -->
-          <div class="login-form" ng-controller="loginctrl as $login" >
+      <div ng-controller="loginctrl as $login">
+          <div class="login-form"  ng-hide="$login.login">
             <!-- <form action="/examples/actions/confirmation.php" method="post"> -->
                 <h2 class="text-center">Log in</h2>       
                 <div class="form-group">
@@ -82,6 +82,19 @@
             <p class="text-center"><a href="#" ng-controller="navctrl as nav" ng-click="nav.redirect('register')">Create an Account</a></p>
         </div>
 
+        <!-- Account Info -->
+        <div class="login-form"  ng-show="$login.login">
+          <!-- <form action="/examples/actions/confirmation.php" method="post"> -->
+              <h2 class="text-center">Account Info</h2>
+
+              <h4>Username: {{$login.details.uname}}</h4>
+              <h4>Name: {{$login.details.name}}</h4>
+              <h4>Email: {{$login.details.email}}</h4>       
+              <div class="form-group" >
+                <button  class="btn btn-primary btn-block" ng-click="$login.logout()">Log Out</button>
+              </div>    
+        </div>
+      </div>
        
 
 </html>
