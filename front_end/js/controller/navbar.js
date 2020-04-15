@@ -5,18 +5,26 @@
       .controller("navctrl", function($window){
           self=this;
 
-            var re = new RegExp("login" + "=([^;]+)");
-            var value = re.exec(document.cookie);
-            if(value===null)
-            {
-                document.cookie = "login=0";
-            }
-            console.log(value[1])//gives login   
+            
             
             self.redirect=function(val){
+                var re = new RegExp("username" + "=([^;]+)");
+                var value = re.exec(document.cookie);
+                var login=0;
+                try{
+                    var e=value[0];
+                    login=1;
+                }
+                catch(err)
+                {
+                    console.log("Not logged in ");
+                    login=0;
+                }
                 if(val== 'home')
                     $window.location.href="/index.html";
-                else if(val=='quiz')
+                else if(val=='quiz' && login == 0)
+                    $window.location.href="/login.html";
+                else if(val=='quiz' && login == 1)
                     $window.location.href="/quiz.html";
                 else if(val == 'login')
                     $window.location.href="/login.html";

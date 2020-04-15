@@ -24,18 +24,21 @@
               "email":vm.usr.email
             }
             console.log(a)
+            vm.register=true;
             $http.put("http://localhost:5000/api/register",a).then(function(response)
 									{
+                    console.log(response.data)
                     vm.response = response.data;
+                    if(vm.response==1)
+                      $window.location.href="/login.html";
+                    else{
+                      vm.register=false;
+                    }
                     // console.log(vm.response);
 										//self.status = response.data;
                   });
-            console.log(vm.response);  
-            if(vm.response==1)
-                $window.location.href="/login.html";
-            else{
-              vm.register=false;
-            }
+            // console.log(vm.response);  
+            
           }
           
       });

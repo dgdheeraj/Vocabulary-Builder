@@ -76,6 +76,8 @@
                 </div>
                         
             <!-- </form> -->
+            <p class="text-center" ng-if="$login.status==1">Login Failed. Invalid Username</p>
+            <p class="text-center" ng-if="$login.status=='2'">Login Failed. Invalid Password</p>
             <br/><br/>
             <p class="text-center"><a href="#" ng-controller="navctrl as nav" ng-click="nav.redirect('register')">Create an Account</a></p>
         </div>
