@@ -10,7 +10,7 @@
         <script src="js/app.module.js"></script>
         <script src="js/controller/quiz.js"></script>
         <script src="js/controller/navbar.js"></script>
-        <script src="js/controller/home.js"></script>
+        <script src="js/controller/leader.js"></script>
         <style>
           body {
             background-image: url('/images/scrabble.jpg');
@@ -71,7 +71,7 @@
             </div>
           </div> -->
 
-          <div class="home" ng-controller="homectrl as $home">
+          <div class="home" ng-controller="leaderctrl as leader">
             <div class="panel panel-default">
               <h2 align="center">Leaderboard</h2>
               <!-- <div class="container" style="width:1000px ;"> -->
@@ -83,19 +83,17 @@
                 <!-- </div> -->
               <br><br>
 
-              <div class="row">
+              <div class="row" >
                   <div class="col col-xs-12">
                       <div class="well well-sm" style="width:950px;height:50px; margin:0px 20px;">
                         <h4><b> &emsp;Rank <span style="display: inline-block; margin-left:345px; "></span>  Username <span style="display: inline-block; margin-left:270px; "></span> Score</b></h4>
                       </div>
                       <br>
-                      <div class="well well-sm" style="width:950px;height:50px; margin:0px 20px;background-color: white;">
-                        <h5><b> &emsp;&emsp;1. <span style="display: inline-block; margin-left:380px; "></span>
-                            Dheeraj <span style="display: inline-block; margin-left:305px; "></span> 2000</b></h5>
+                      <div class="well well-sm" ng-repeat="a in leader.res" style="width:950px;height:50px; margin:0px 20px;background-color: white;" >
+                        <h5><b> &emsp;&emsp;{{$index+1}} <span style="display: inline-block; margin-left:380px; "></span>
+                            {{a.username}} <span style="display: inline-block; margin-left:305px; "></span> {{a.score}}</b></h5>
                       </div>
-                      <div class="well well-sm" style="width:950px;height:50px; margin:0px 20px;background-color: white;">
-                        <h5><b> &emsp;&emsp;1. <span style="display: inline-block; margin-left:380px; "></span>
-                            Dheeraj <span style="display: inline-block; margin-left:305px; "></span> 2000</b></h5>
+                      <br>
                       </div>
                       <br>
                   </div>

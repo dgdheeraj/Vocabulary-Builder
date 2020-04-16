@@ -7,6 +7,7 @@ import re
 import datetime
 import hashlib
 import json
+from synonyms import *
 pword_pat = re.compile('^[a-fA-F0-9]{40}$')
 
 app = Flask(__name__)
@@ -88,24 +89,26 @@ def validate():
         return "1"
 
 @app.route('/api/details/<username>', methods=['GET'])
-@cross_origin(supports_credentials=True)
 def get_details(username):
     whereCond = "uname = '"+str(username)+"'"
 
-    query = {"table":"users", "columns":["uname", "name", "email"], "where":whereCond}
+    query = {"table":"users", "columns":["uname", "name", "email", "score"], "where":whereCond}
 
     data = requests.post(url='http://127.0.0.1:5000/api/v1/db/read',json=query)
-    data=data.json()
+
     response_msg = {}
+    data=data.json()
+    # print(data["uname"])
     response_msg["uname"] = data["uname"][0]
     response_msg["name"] = data["name"][0]
     response_msg["email"] = data["email"][0]
+    response_msg["score"] = data["score"][0]
 
     return jsonify(response_msg)
 
+
 # Quiz APIs ---------------------------------------------------------------------------
 @app.route('/api/quiz', methods=['POST'])
-@cross_origin(supports_credentials=True)
 def send_quiz():
     num = request.get_data()
     num = num.decode('utf-8')
@@ -113,7 +116,7 @@ def send_quiz():
     num = int(num['ques'])
     global total_ques
 
-    response_msg = {}
+    response_msg = []
 
     q_ids = random.sample(range(1,total_ques),(num*4))
     print(q_ids)
@@ -129,13 +132,13 @@ def send_quiz():
         data = requests.post(url='http://127.0.0.1:5000/api/v1/db/read',json=query1) 
         print(data)
         data = data.json()
-        opt_list = [1,2,3,4]
-        random.shuffle(opt_list)
         q_dict = {}
-        possibilities = {}
+        possibilities = []
+        q_dict["q_id"] = q_ids[x]
         q_dict["text"] = data["meaning"][0]
-        possibilities[opt_list[0]] = data["word"][0]
 
+        opt1 = {"answer" : data["word"][0]}
+        possibilities.append(opt1)
         #read db for word with word_id = x+1, x+2, x+3
         #put them in possibilities along with word with word_id = x
         for i in range(1,4):
@@ -144,15 +147,16 @@ def send_quiz():
             query2 = {"table":"vocab", "columns":["word"], "where":whereCond}
             word_data = requests.post(url='http://127.0.0.1:5000/api/v1/db/read',json=query2)
             word_data = word_data.json()
-            possibilities[opt_list[i]] = word_data["word"][0]
-
+            opt = { "answer" : word_data["word"][0] }
+            possibilities.append(opt)
+        random.shuffle(possibilities)
         q_dict["possibilities"] = possibilities
-        q_dict["selected"] = 'NULL'
-        q_dict["correct"] = 'NULL'
+        q_dict["selected"] = 'null'
+        q_dict["correct"] = 'null'
 
-        response_msg[q_ids[x]] = q_dict
+        response_msg.append(q_dict)
         
-    return jsonify(response_msg)
+    return json.dumps(response_msg)
 
 @app.route('/api/quiz/answers', methods=['POST'])
 @cross_origin(supports_credentials=True)
@@ -187,6 +191,110 @@ def serve_pil_image(id):
     elif(id=='3'):
         return send_file("leader.png", mimetype='image/png') 
      
+
+#Synonyms=----------------------------------------------------------------------------------
+
+@app.route('/api/synonym', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def get_synonym():
+    con = sqlite3.connect("vocab.db")
+    cur = con.cursor()
+    cur.execute("SELECT * FROM vocab LIMIT 30 OFFSET ABS(RANDOM()) % MAX((SELECT COUNT(*) FROM vocab), 1)")
+    rows=cur.fetchall()
+    words=[]
+    response_msg = []
+    for r in rows:
+        try:
+            l=gen_syn(r[1])
+        except:
+            continue
+        if len(l)>=1:
+            d={}
+            d["word"]=r[1]
+            d["synonym"]=l
+            response_msg.append(d)
+    # l=gen_syn(w)
+    # data = requests.post(url='http://127.0.0.1:5000/api/v1/db/read',json=query)
+    # data = data.json()
+    # response_msg["synonym"] = l
+    # response_msg["ans"] = data["word"][0]
+    # response_msg["usage1"] = data["usage1"][0]
+    # response_msg["usage2"] = data["usage2"][0]
+    return jsonify(response_msg)
+
+#----------------------------------------------------------------------------------------
+@app.route('/api/leaderboard', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def leaderboard():
+    cxn=sqlite3.connect('vocab.db')
+    cursor=cxn.cursor()
+    #make an sql statement to get all unames and scores
+    #sort the dictionary based on scores
+    #return top 10 records
+
+    sql_query = "select uname,name,score from users"#query which fetches top10 users
+
+    cursor.execute(sql_query)
+    rows = cursor.fetchall()
+    rows.sort(key = lambda x : x[2])
+    num_records = 10
+    len_rows = len(rows)
+    if(len_rows < 10):
+        num_records = len_rows
+    response_msg = []
+    for i in range(num_records):
+        record = {}
+        record["username"] = rows[len_rows-i-1][0]
+        record["score"] = rows[len_rows-i-1][2]
+        response_msg.append(record)
+    return json.dumps(response_msg)
+
+@app.route('/api/increment_score', methods=['POST'])
+def increment_score():
+    data = request.get_data()
+    data = data.decode('utf-8')
+    data = json.loads(data)
+    uname = data['uname']
+    value = int(data['score'])
+
+    cxn=sqlite3.connect('vocab.db')
+    cursor=cxn.cursor()
+
+    query = "UPDATE users SET score = score + "+str(value)+" where uname = '"+str(uname)+"'"
+    #print(query)
+    try:
+        cursor.execute(query)
+        cxn.commit()
+        return "0" #Success
+    except:
+        return "1"
+
+@app.route('/api/learn_data', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def learn():
+    response_msg = []
+
+    q_ids = random.sample(range(1,total_ques),20)
+    print(q_ids)
+    #generate #num*4 unique random numbers between 0 to total_ques in that 1 will be ques other 3 will be options : for 1 ques : 4 unique random nums generated
+    #for eachrandom num generated get that ques, 4 possible answers
+
+    for x in range(1,len(q_ids)):
+        #read database for word with word_id=x
+        whereCond = "word_id = "+str(q_ids[x])
+        query1 = {"table":"vocab", "columns":["word","meaning"], "where":whereCond}
+
+        #get its data into variable data
+        data = requests.post(url='http://127.0.0.1:5000/api/v1/db/read',json=query1) 
+        #print(data)
+        data = data.json()
+        q_dict = {}
+        q_dict["word"] = data["word"][0]
+        q_dict["meaning"] = data["meaning"][0]
+        response_msg.append(q_dict)
+    return json.dumps(response_msg)
+
+
 
 
 #DB API---------------------------------------------------------------------------------------

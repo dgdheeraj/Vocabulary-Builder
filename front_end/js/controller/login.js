@@ -19,17 +19,21 @@
           vm.details={
             "name":"",
             "email":"",
-            "uname":""
+            "uname":"",
+            "score":""
           };
+          vm.details=null;
           if(vm.login==1)
           {
             // console.log(value[1]);
             $http.get("http://localhost:5000/api/details/"+vm.username).then(function(response)
 									{
                     // console.log(response.data["name"]);
-                    vm.details["name"]=response.data["name"];
-                    vm.details["email"]=response.data["email"];
-                    vm.details["uname"]=response.data["uname"];
+                    // vm.details["name"]=response.data["name"];
+                    // vm.details["email"]=response.data["email"];
+                    // vm.details["uname"]=response.data["uname"];
+                    // vm.details["score"]=response.data["score"];
+                    vm.details=response.data;
                     // vm.details=JSON.parse(response.data);
             });
             console.log(vm.details);

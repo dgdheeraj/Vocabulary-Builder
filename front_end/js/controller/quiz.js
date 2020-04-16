@@ -1,5 +1,5 @@
 (function(){
-    angular.module("VocBuild").controller("quizCtrl",function($http){
+    angular.module("VocBuild").controller("quizCtrl",function($http,$window){
         // self=this;
         var vm=this;
         vm.quizQuestions  = [
@@ -70,11 +70,17 @@
         $http.post("http://localhost:5000/api/quiz",a).then(function(response)
 									{
                     console.log(response.data);
-                    // vm.quizQuestions=response.data;
-                    console.log(response.data.records)
+                    vm.quizQuestions=response.data;
+                    for(var i in vm.quizQuestions.length)
+                    {
+                        vm.quizQuestions[i]["selected"]=null;
+                        vm.quizQuestions[i]["correct"]=null;
+                    }
+                    console.log(vm.quizQuestions)
+                    
+                    // console.log(response.data.records)
         });
-        // console.log(vm.quizQuestions[0]["text"])
-        // console.log(vm.quizQuestions)
+
         //Quiz Logic--------------------------------------------------------        
         vm.activeq=0;
         vm.setActiveQuestion=setActiveQuestion;
@@ -121,6 +127,7 @@
                 return;
             }
             vm.activeq=a;
+            console.log("Question Num",vm.activeq);   
         }
 
         var numQuesAnswered=0;
@@ -193,14 +200,63 @@
 
         vm.selectAnswer=function(index){
             vm.quizQuestions[vm.activeq].selected=index;
-            MarkQuiz(index);
-
-        }
+        };
         //================================================================
         // self.counter=100;
+        vm.correct=-1;
+        vm.score=0;
+        vm.show=null
+        vm.flag=0;
+        vm.check=function(){
+            var a={
+                "q_id":vm.quizQuestions[vm.activeq]["q_id"]
+            };
+            var option=(vm.quizQuestions[vm.activeq]["selected"]);
 
+            var selected=(vm.quizQuestions[vm.activeq]["possibilities"][option]["answer"])
+            $http.post("http://localhost:5000/api/quiz/answers",a).then(function(response)
+									{
+                    console.log("Answer",response.data);
+                    if(response.data["ans"]==selected)
+                    {
+                        vm.correct=true;
+                        vm.score+=1;
+                    }
+                    else
+                        vm.correct=false;
+                    vm.show=response.data;
+                    vm.quizQuestions[vm.activeq]["correct"]="done";
 
-
-
+                    var tmp=0;
+                    for(let i = 0; i < vm.quizQuestions.length; i++)
+                    {
+                        console.log(vm.quizQuestions[i]["correct"]);
+                        if(vm.quizQuestions[i]["correct"]=="done")
+                        {
+                            tmp++;
+                            // break;
+                        }
+                    }
+                    if(tmp==vm.quizQuestions.length)
+                        vm.flag=1;
+                    else    
+                        vm.flag=0;
+            });
+        };
+        
+        vm.end=function(){
+            var re = new RegExp("username" + "=([^;]+)");
+            var value = re.exec(document.cookie);
+            var a={
+                "uname":value[1],
+                "score":vm.score
+            }
+            console.log(a);
+            $http.post("http://localhost:5000/api/increment_score",a).then(function(response)
+			{
+                console.log(response.data);
+            });
+            $window.location.href="/index.html";
+        }
     })
 })();

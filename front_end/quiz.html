@@ -78,10 +78,10 @@
                     <div class="btn-toolbar">
                         <button class="btn" 
                         ng-repeat="q in quiz.quizQuestions" 
-                        ng-class="{'btn-info':q.selected!==null,'btn-danger':q.selected==null}"
+                        ng-class="{'btn-info':q.selected!='null','btn-danger':q.selected=='null'}"
                         ng-click="quiz.setActiveQuestion($index)">
                           <span class="glyphicon"
-                            ng-class="{'glyphicon-pencil':q.selected!==null,'glyphicon-question-sign':q.selected==null}"></span> </button>
+                            ng-class="{'glyphicon-pencil':q.selected!=='null','glyphicon-question-sign':q.selected=='null'}"></span> </button>
                     </div>
                 </div>
                 
@@ -134,16 +134,21 @@
                   </div>
                 </div>
               </div>
-              <button class="btn btn-warning" ng-click="quiz.questionAnswered()">Continue</button>
-
+              <button class="btn btn-warning" ng-click="quiz.questionAnswered()" ng-hide="quiz.flag==1">Continue</button>
+              <button class="btn btn-warning" ng-click="quiz.end()" ng-show="quiz.flag==1">End Quiz</button>
+              <button class="btn btn-warning" ng-click="quiz.check()" ng-hide="quiz.quizQuestions[quiz.activeq].correct=='done'">Submit Answer</button>
+              <h4 ng-show="quiz.flag==1">Your Score: {{quiz.score}}</h4>
             </div>
-            
-            <div class="well well-sm" ng-show="quiz.finalise">
+
+            <br><br>
+            <div class="well well-sm" ng-show="quiz.quizQuestions[quiz.activeq].correct=='done'">
               <div class="row">
                 <div class="col-xs-12">
-                  <h3>Are you sure?</h3>
-                  <button class="btn btn-success" ng-click="quiz.finaliseAnswers()">Yes</button> 
-                  <button class="btn btn-danger" ng-click="quiz.finalise=false">No</button>
+                  <h5 ng-show="quiz.correct==true">Correct</h5>
+                  <h5 ng-show="quiz.correct==false">Wrong</h5>
+                  <h5 ng-show="quiz.correct==false">Answer: {{quiz.show.ans}}</h5>
+                  <h5>Usage 1:{{quiz.show.usage1}}</h5>
+                  <h5>Usage 1:{{quiz.show.usage2}}</h5>
                 </div>
               </div>
             </div>
