@@ -24,7 +24,12 @@
               "email":vm.usr.email
             }
             console.log(a)
-            vm.register=true;
+            if(vm.usr.uname!=vm.usr.passwd)
+            {
+              vm.register=false;
+              return;
+            }
+              vm.register=true;
             $http.put("http://localhost:5000/api/register",a).then(function(response)
 									{
                     console.log(response.data)
@@ -32,7 +37,7 @@
                     if(vm.response==1)
                       $window.location.href="/login.html";
                     else{
-                      vm.register=false;
+                      vm.register=0;
                     }
                     // console.log(vm.response);
 										//self.status = response.data;

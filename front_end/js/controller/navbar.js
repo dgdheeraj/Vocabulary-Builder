@@ -27,7 +27,7 @@
           
         vm.sr=function(){
             console.log(vm.search);
-            vm.val=true;
+            $window.location.href="/search.html?search="+vm.search
         }
             vm.redirect=function(val){
                 var re = new RegExp("username" + "=([^;]+)");

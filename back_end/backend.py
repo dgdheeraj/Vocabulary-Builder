@@ -295,7 +295,28 @@ def learn():
     return json.dumps(response_msg)
 
 
+@app.route('/api/search', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def search():
+    data = request.get_data()
+    data = data.decode('utf-8')
+    data = json.loads(data)
+    inputword = data["inputword"].lower()
 
+    response_msg = []
+
+    cxn=sqlite3.connect('vocab.db')
+    cursor=cxn.cursor()
+
+    sql_query = "SELECT word,meaning FROM vocab WHERE LOWER(word) LIKE "+"'%"+inputword+"%'"
+    cursor.execute(sql_query)
+    rows = cursor.fetchall()
+    for x in rows:
+        ans = {}
+        ans["word"] = x[0]
+        ans["meaning"] = x[1]
+        response_msg.append(ans)
+    return json.dumps(response_msg)
 
 #DB API---------------------------------------------------------------------------------------
 @app.route('/api/v1/db/write',methods=["POST"])

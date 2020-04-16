@@ -34,6 +34,9 @@
                 background-attachment: fixed;
                 background-size: cover;
             }
+            .inc {
+              background-color: #FF7F50;
+            }
         </style>
 
       </head>
@@ -66,14 +69,15 @@
               <li><a href="#" ng-click="nav.redirect('contact')">
                 <span class="glyphicon glyphicon-earphone"></span> Contact Us</a></li>
               <!-- <li style="margin:0px 440px;background-color: red;"><a href="#" ng-click="nav.redirect('login')">Log Out</a></li> -->
-              <input type="text" placeholder="Search.." name="search" 
+              <input type="text" placeholder="Search.." name="search" ng-model="nav.search" 
               style="width:250px;position:absolute;top:10px;height:30px;margin:0px 80px;border-radius: 7px;border:#cccccc ">
               <button type="submit" 
+              ng-click="nav.sr()"
               style="position:absolute;top:10px;margin:0px 300px;height:30px;width:30px ;background-color:   #cccccc;border:#cccccc;border-radius: 5px;">
               <span class="glyphicon glyphicon-search"></span></button>
               <button
               ng-show="nav.login==true"
-              style="position:absolute;  top:10px;right:0px;margin:0px 440px 0px ;border:#8B0000;background-color: #FF7F50;width: 80px;height:30px" 
+              style="position:fixed;  top:10px;right:150px; ;border:#8B0000;background-color: #FF7F50;width: 80px;height:30px" 
               ng-click="nav.logout()"><span class="glyphicon glyphicon-off"></span>  Logout</button>
             </ul>
           </div>
@@ -112,7 +116,9 @@
 
                 <div class="form-group has-feedback">
                   <!-- <label class="control-label">Password:</label> -->
-                  <input type="password" class="form-control" ng-model="$register.usr.rpasswd" placeholder="Repeat Password" />
+                  <input type="password" class="form-control" 
+                  ng-model="$register.usr.rpasswd" 
+                  ng-class="{'inc':$register.usr.passwd!=$register.usr.rpasswd}" placeholder="Repeat Password" />
                   <i class="glyphicon glyphicon-lock form-control-feedback"></i>
                 </div>
 
@@ -124,7 +130,12 @@
                 </div>
                         
             <br>
-            <p class="text-center" ng-if="$register.register==false">Registration Failed. Please try Again</p>
+            <p class="text-center" 
+            style="border:2px;" ng-if="$register.register==0 || $register.register==false ">Registration Failed</p>
+            <p class="text-center" ng-if="$register.register==0 || $register.register==false ">Reason:</p>
+            <p class="text-center" ng-if="$register.register==false">Passwords Do Not Match</p>
+            <p class="text-center" ng-if="$register.register==0">Username taken</p>
+
             <!-- </form> -->
             <br/><br/>
             <p class="text-center"><a href="#" ng-controller="navctrl as nav" ng-click="nav.redirect('login')">Already Have Account? Login here</a></p>
