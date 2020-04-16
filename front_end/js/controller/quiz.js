@@ -71,7 +71,7 @@
 									{
                     console.log(response.data);
                     // vm.quizQuestions=response.data;
-                    console.log(response.data[0])
+                    console.log(response.data.records)
         });
         // console.log(vm.quizQuestions[0]["text"])
         // console.log(vm.quizQuestions)

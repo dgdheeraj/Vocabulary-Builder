@@ -3,12 +3,14 @@
     <head>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script><script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
         <link rel="stylesheet" href="css/style.css">
         <script src="js/app.module.js"></script>
         <script src="js/controller/quiz.js"></script>
         <script src="js/controller/navbar.js"></script>
+        <script src="js/controller/home.js"></script>
         <style>
           body {
             background-image: url('/images/scrabble.jpg');
@@ -23,21 +25,39 @@
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container-fluid" ng-controller="navctrl as nav">
               <div class="navbar-header">
-                <a class="navbar-brand" href="#">Vocabulary Builder</a>
+                <a class="navbar-brand" href="#"><img src="/images/icon.png" style="width:35px;height:35px;position: relative;top:-8px;"></a>
               </div>
               <ul class="nav navbar-nav">
-                <li class="active"><a href="#" ng-click="nav.redirect('home')">Home</a></li>
+                <li class="active"><a href="#" ng-click="nav.redirect('home')">
+                  <span class="glyphicon glyphicon-home"></span> Home</a></li>
                 <li class="dropdown">
-                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <span class="glyphicon glyphicon-list"></span> Explore
                   <span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="#">Page 1-1</a></li>
-                    <li><a href="#">Page 1-2</a></li>
-                    <li><a href="#">Page 1-3</a></li>
+                  <ul class="dropdown-menu" style="background-color: white;">
+                    <li style="height: 35px;"><a href="#" ng-click="nav.redirect('learn')" > <span class="glyphicon glyphicon-education"></span> Learn</a></li>
+                    <li style="height: 35px;"><a href="#" ng-click="nav.redirect('quiz')"><span class="glyphicon glyphicon-hourglass"></span> Quiz</a></li>
+                    <li><a href="#" ng-click="nav.redirect('Leaderboard')"><span class="glyphicon glyphicon-stats"></span> Leaderboard</a></li>
                   </ul>
                 </li>
-                <li><a href="#" ng-click="nav.redirect('login')">Login/Acc Info</a></li>
-                <li><a href="#" ng-click="nav.redirect('register')">Register</a></li>
+                <li><a href="#" ng-show="nav.login==true" ng-click="nav.redirect('login')">
+                  <span class="glyphicon glyphicon-user"></span> My Account</a></li>
+                <li><a href="#" ng-show="nav.login==false" ng-click="nav.redirect('login')">
+                  <span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                <li><a href="#" ng-click="nav.redirect('register')">
+                  <span class="glyphicon glyphicon-pencil"></span> Register</a></li>
+                <li><a href="#" ng-click="nav.redirect('contact')">
+                  <span class="glyphicon glyphicon-earphone"></span> Contact Us</a></li>
+                <!-- <li style="margin:0px 440px;background-color: red;"><a href="#" ng-click="nav.redirect('login')">Log Out</a></li> -->
+                <input type="text" placeholder="Search.." name="search" 
+                style="width:250px;position:absolute;top:10px;height:30px;margin:0px 80px;border-radius: 7px;border:#cccccc ">
+                <button type="submit" 
+                style="position:absolute;top:10px;margin:0px 300px;height:30px;width:30px ;background-color:   #cccccc;border:#cccccc;border-radius: 5px;">
+                <span class="glyphicon glyphicon-search"></span></button>
+                <button
+                ng-show="nav.login==true"
+                style="position:absolute;  top:10px;right:0px;margin:0px 440px 0px ;border:#8B0000;background-color: #FF7F50;width: 80px;height:30px" 
+                ng-click="nav.logout()"><span class="glyphicon glyphicon-off"></span>  Logout</button>
               </ul>
             </div>
           </nav>
@@ -51,23 +71,24 @@
             </div>
           </div> -->
 
-          <div class="home">
+          <div class="home" ng-controller="homectrl as $home">
             <div class="panel panel-default">
               <!-- <h4 align="center">Welcome to Vocabulary Builder!</h4> -->
               <div class="container" style="width:1000px ;">
                 <div class="page-header">
-                    <h2>Welcome to Vocabulary Builder!</h2>
-                    <h3>
+                    <h2 align="center">Welcome to Vocabulary Builder!</h2>
+                    <h3 align="center">
                         The best place to improve your language skills.
                     </h3>
                 </div>
               <br>
               <div class ="row">
-                <div class="col col-xs-6">
-                  <image src="/images/learn.png" style="width:200px;height:200px;margin:10px 100px;"></image>  
+                <div class="col col-xs-6" id="im1">
+                  <!-- <image src="/images/learn.png" style="width:200px;height:200px;margin:10px 100px;"></image>   -->
+                  <image src="{{$home.image1}}" style="width:200px;height:200px;margin:10px 100px;"></image>
                 </div>
-                <div class="col col-xs-6">
-                  <image src="/images/quiz.png" style="width:200px;height:200px;margin:10px 70px;"></image>
+                <div class="col col-xs-6" id="im2">
+                  <image src="{{$home.image2}}" style="width:200px;height:200px;margin:10px 70px;"></image>
                 </div>
                 <br><br><br><br><br><br><br><br><br><br><br>
 
@@ -82,6 +103,22 @@
                 </div>
                 <br><br><br><br><br>
               </div>
+              <br><br>
+              <div class ="row">
+                <div class="col col-xs-12">
+                  <image src="{{$home.image3}}" style="width:200px;height:200px;margin:10px 350px;"></image>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col col-xs-12">
+                  <button type="button" class="btn btn-info" 
+                  style="width:150px;height:50px;margin:10px 375px; font-size:16px;"
+                  ng-controller="navctrl as nav" ng-click="nav.redirect('quiz')">Leaderboard</button>
+                </div>
+                </div>
+                <br><br><br>
+              </div>
+
             </div>
           </div>
           

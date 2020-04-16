@@ -14,7 +14,7 @@ CORS(app, support_credentials=True)
 
 total_ques = 13160
 
-#1st api
+# APIs for Login and Reigster-----------------------------------------
 @app.route('/api/register', methods=['PUT'])
 @cross_origin(supports_credentials=True)
 def add_user():
@@ -51,7 +51,59 @@ def add_user():
         #invalid uname
         return "0"
         
+@app.route('/api/validate', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def validate():
+    data = request.get_json()
+    uname = data["uname"]
+    pword = data["pword"]
+    pword = hashlib.sha256(pword.encode('utf-8')).hexdigest()
+    query1 = {"table":"Users","columns":["uname"] ,"where":"1"}
+    uname_list = requests.post(url='http://127.0.0.1:5000/api/v1/db/read',json=query1)
+    
+    valid=0
+    uname_list=uname_list.json()
+    for x in uname_list["uname"]:
+        if(uname==x):
+            #print("duplicate")
+            valid=1
+            break
 
+    if(valid==1):
+        #check password
+        #print("Password is :"+pword)
+
+        whereCond = "uname = '"+uname+"'"
+        query2 = {"table":"Users","columns":["pwd"] ,"where":whereCond}
+        actual_pword = requests.post(url='http://127.0.0.1:5000/api/v1/db/read',json=query2)
+        actual_pword=actual_pword.json()
+        print(actual_pword['pwd'] )
+        if pword == actual_pword["pwd"][0]:
+            #valid password
+            return "0"
+        else:
+            return "2"
+    else:
+        #invalid uname
+        return "1"
+
+@app.route('/api/details/<username>', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def get_details(username):
+    whereCond = "uname = '"+str(username)+"'"
+
+    query = {"table":"users", "columns":["uname", "name", "email"], "where":whereCond}
+
+    data = requests.post(url='http://127.0.0.1:5000/api/v1/db/read',json=query)
+    data=data.json()
+    response_msg = {}
+    response_msg["uname"] = data["uname"][0]
+    response_msg["name"] = data["name"][0]
+    response_msg["email"] = data["email"][0]
+
+    return jsonify(response_msg)
+
+# Quiz APIs ---------------------------------------------------------------------------
 @app.route('/api/quiz', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def send_quiz():
@@ -122,60 +174,22 @@ def get_answer():
     response_msg["usage2"] = data["usage2"][0]
     return jsonify(response_msg)
 
-@app.route('/api/details/<username>', methods=['GET'])
+
+# Sending Images for Multi Stage Download--------------------------------------------------
+from flask import send_file
+@app.route('/img/<id>', methods=['GET'])
 @cross_origin(supports_credentials=True)
-def get_details(username):
-    whereCond = "uname = '"+str(username)+"'"
-
-    query = {"table":"users", "columns":["uname", "name", "email"], "where":whereCond}
-
-    data = requests.post(url='http://127.0.0.1:5000/api/v1/db/read',json=query)
-    data=data.json()
-    response_msg = {}
-    response_msg["uname"] = data["uname"][0]
-    response_msg["name"] = data["name"][0]
-    response_msg["email"] = data["email"][0]
-
-    return jsonify(response_msg)
-
-@app.route('/api/validate', methods=['POST'])
-@cross_origin(supports_credentials=True)
-def validate():
-    data = request.get_json()
-    uname = data["uname"]
-    pword = data["pword"]
-    pword = hashlib.sha256(pword.encode('utf-8')).hexdigest()
-    query1 = {"table":"Users","columns":["uname"] ,"where":"1"}
-    uname_list = requests.post(url='http://127.0.0.1:5000/api/v1/db/read',json=query1)
-    
-    valid=0
-    uname_list=uname_list.json()
-    for x in uname_list["uname"]:
-        if(uname==x):
-            #print("duplicate")
-            valid=1
-            break
-
-    if(valid==1):
-        #check password
-        #print("Password is :"+pword)
-
-        whereCond = "uname = '"+uname+"'"
-        query2 = {"table":"Users","columns":["pwd"] ,"where":whereCond}
-        actual_pword = requests.post(url='http://127.0.0.1:5000/api/v1/db/read',json=query2)
-        actual_pword=actual_pword.json()
-        print(actual_pword['pwd'] )
-        if pword == actual_pword["pwd"][0]:
-            #valid password
-            return "0"
-        else:
-            return "2"
-    else:
-        #invalid uname
-        return "1"
+def serve_pil_image(id):
+    if(id=='1'):
+        return send_file("learn.png", mimetype='image/png') 
+    elif(id=='2'):
+        return send_file("quiz.png", mimetype='image/png') 
+    elif(id=='3'):
+        return send_file("leader.png", mimetype='image/png') 
+     
 
 
-#8th api
+#DB API---------------------------------------------------------------------------------------
 @app.route('/api/v1/db/write',methods=["POST"])
 @cross_origin(supports_credentials=True)
 def addToDB():

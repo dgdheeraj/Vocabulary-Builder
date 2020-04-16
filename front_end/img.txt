@@ -1,0 +1,1 @@
+<image src="/images/learn.png" style="width:200px;height:200px;margin:10px 100px;"></image> | <image src="/images/quiz.png" style="width:200px;height:200px;margin:10px 70px;"></image>
