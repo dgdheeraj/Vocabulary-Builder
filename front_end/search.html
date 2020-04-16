@@ -28,7 +28,7 @@
             <a class="navbar-brand" href="#"><img src="/images/icon.png" style="width:35px;height:35px;position: relative;top:-8px;"></a>
           </div>
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#" ng-click="nav.redirect('home')">
+            <li ><a href="#" ng-click="nav.redirect('home')">
               <span class="glyphicon glyphicon-home"></span> Home</a></li>
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -100,16 +100,16 @@
                     <br>
                 </div>
                 <br><br><br>
-                <div class="row">
+                <div class="row" ng-repeat="w in s.op">
                     <div class="well well-sm" style="width:950px; margin:0px 50px;background-color: white;">
                         <!-- <h5><b> &emsp;&emsp;1. <span style="display: inline-block; margin-left:380px; "></span> -->
                             <!-- Dheeraj <span style="display: inline-block; margin-left:305px; "></span> 2000</b></h5> -->
                         <div class="row">
                             <div class="col col-xs-4">
-                                <h5 align="center"><b>Anxious</b></h5>
+                                <h5 align="center"><b>{{w.word}}</b></h5>
                             </div>
                             <div class="col col-xs-8">
-                                <h5><b>To be ahgijwv igw eviqui qie vuib wrveqi qigebi </b></h5>
+                                <h5><b>{{w.meaning}}</b></h5>
                             </div>
                         </div>
                     </div>
