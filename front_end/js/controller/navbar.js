@@ -22,6 +22,13 @@
             vm.login=false;
           }
             
+          vm.search=null;
+        //   console.log(vm.search);
+          
+        vm.sr=function(){
+            console.log(vm.search);
+            vm.val=true;
+        }
             vm.redirect=function(val){
                 var re = new RegExp("username" + "=([^;]+)");
                 var value = re.exec(document.cookie);

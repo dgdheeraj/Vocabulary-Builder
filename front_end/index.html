@@ -49,9 +49,10 @@
                 <li><a href="#" ng-click="nav.redirect('contact')">
                   <span class="glyphicon glyphicon-earphone"></span> Contact Us</a></li>
                 <!-- <li style="margin:0px 440px;background-color: red;"><a href="#" ng-click="nav.redirect('login')">Log Out</a></li> -->
-                <input type="text" placeholder="Search.." name="search" 
+                <input type="text" placeholder="Search.." name="search" ng-model="nav.search" 
                 style="width:250px;position:absolute;top:10px;height:30px;margin:0px 80px;border-radius: 7px;border:#cccccc ">
                 <button type="submit" 
+                ng-click="nav.sr()"
                 style="position:absolute;top:10px;margin:0px 300px;height:30px;width:30px ;background-color:   #cccccc;border:#cccccc;border-radius: 5px;">
                 <span class="glyphicon glyphicon-search"></span></button>
                 <button
@@ -70,7 +71,8 @@
                 </h3>
             </div>
           </div> -->
-
+        <div ng-controller="navctrl as nav" ng-hide="nav.val==true">
+          <!-- <h1>{{nav.val}}</h1> -->
           <div class="home" ng-controller="homectrl as $home">
             <div class="panel panel-default">
               <!-- <h4 align="center">Welcome to Vocabulary Builder!</h4> -->
@@ -121,6 +123,6 @@
 
             </div>
           </div>
-          
+        </div>   
     </body>
 </html>
