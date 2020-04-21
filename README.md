@@ -8,23 +8,22 @@ Built using AngularJS and Flask
 3. Leaderboard
 
 # Running in Development Mode
-
 Prerequisites: Node.js, Flask,git,nltk,sqlite3
 
-##### Install live-server<br>
+##### Install live-server
 npm install -g live-server
 
-##### Clone the repository<br>
+##### Clone the repository
 git clone https://github.com/dgdheeraj/Vocabulary-Builder.git
 
-##### Go to the back_end folder and start the flask app <br>
+##### Go to the back_end folder and start the flask app 
 cd back_end<br>
 export FLASK_APP=backend.py<br>
 flask run<br>
 
-##### Go to frontend folder and start the live-server<br>
+##### Go to frontend folder and start the live-server
 cd ..<br>
 cd front_end<br>
 live-server<br>
 
-Go to localhost:8080 to open the web-app
+##### Go to localhost:8080 to open the web-app
