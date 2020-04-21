@@ -9,7 +9,7 @@ Built using AngularJS and Flask
 
 # Running in Development Mode
 
-Prerequisites: Node.js, Flask,git 
+Prerequisites: Node.js, Flask,git,nltk,sqlite3
 
 ##### Install live-server<br>
 npm install -g live-server
