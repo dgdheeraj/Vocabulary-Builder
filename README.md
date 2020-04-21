@@ -11,7 +11,7 @@ Built using AngularJS and Flask
 
 Prerequisites: Node.js, Flask,git 
 
-Install live-server
+Install live-server<br>
 npm install -g live-server
 
 Clone the repository
