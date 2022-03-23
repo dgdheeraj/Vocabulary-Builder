@@ -15,6 +15,8 @@ Built using AngularJS and Flask
 # Running in Development Mode
 Prerequisites: Node.js, Flask,git,nltk,sqlite3
 
+`pip3 install -r requirements.txt`
+
 ##### Install live-server
 `npm install -g live-server`
 
