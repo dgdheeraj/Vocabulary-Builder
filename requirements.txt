@@ -1,0 +1,6 @@
+Django==4.0.3
+djangorestframework==3.13.1
+Flask==2.0.3
+Flask_Cors==3.0.10
+nltk==3.7
+requests==2.27.1
